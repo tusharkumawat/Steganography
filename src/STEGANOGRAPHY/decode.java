@@ -22,6 +22,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.sun.javafx.embed.swing.Disposer;
+
 public class decode extends Panel
 {
 	
@@ -48,11 +50,35 @@ public class decode extends Panel
 		pane.setBorder(BorderFactory.createLineBorder(Color.BLACK,1));
 		add(pane);
 		JButton btnNewButton = new JButton("DECODE");
+		JButton btnNewButton2 = new JButton("Send");
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.anchor = GridBagConstraints.NORTH;
 		gbc_btnNewButton.gridx = 0;
 		gbc_btnNewButton.gridy = 1;
-		add(btnNewButton, gbc_btnNewButton);
+		add(btnNewButton,gbc_btnNewButton);
+		GridBagConstraints gbc_btnNewButton2 = new GridBagConstraints();
+		gbc_btnNewButton2.anchor = GridBagConstraints.NORTH;
+		gbc_btnNewButton2.gridx = 0;
+		gbc_btnNewButton2.gridy = 2;
+		add(btnNewButton2,gbc_btnNewButton2);
+		
+		btnNewButton2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if(steganographyview.depath==null)
+				{
+					
+					btnNewButton2.setEnabled(false);
+				   
+				}
+				else
+				{
+					email mail=new email();
+				}
+				
+			}
+		});
 		
 		btnNewButton.addActionListener(new ActionListener() {
 		
@@ -61,49 +87,16 @@ public class decode extends Panel
 				if(steganographyview.depath==null)
 				{
 					
-					
-				   FileNameExtensionFilter filter=new FileNameExtensionFilter("Image Files","jpg","png");
-					
-					JFileChooser chooser=new JFileChooser("./");
-					chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-					chooser.setFileFilter(filter);
-					int value=chooser.showOpenDialog(new encode());
-					if(value==JFileChooser.APPROVE_OPTION)
-					{
-						File directory=chooser.getSelectedFile();
-						try
-						{
-							
-							steganographyview.depath=directory.getPath();
-							
-							decode.label.setIcon(new ImageIcon(ImageIO.read(new File(steganographyview.depath))));
-						}
-						catch(Exception f)
-						{
-							JOptionPane.showMessageDialog(new decode(), "The file cannot be opened", "Error!",JOptionPane.ERROR_MESSAGE);
-						}
-					}	
-				    try
-				    {
-						String texta=decodee(steganographyview.depath);
-						JOptionPane.showMessageDialog(new encode(), "Image decoded!!","Success",JOptionPane.INFORMATION_MESSAGE);
-						encode e=new encode();
-				
-						new steganographyview().setContentPane(e);
-				
-						e.textinput(texta);
-				    }
-				    catch(Exception e)
-				    {
-					
-				    }
+					filename();
+				   
 				}
 				else
 				{
 					String texta=decodee(steganographyview.depath);
 					JOptionPane.showMessageDialog(new encode(), "Image decoded!!","Success",JOptionPane.INFORMATION_MESSAGE);
+					
 					encode e=new encode();
-			
+					
 					new steganographyview().setContentPane(e);
 			
 					e.textinput(texta);
@@ -115,6 +108,43 @@ public class decode extends Panel
 		
 		
 		
+	}
+	void filename(){
+		FileNameExtensionFilter filter=new FileNameExtensionFilter("Image Files","jpg","png");
+		
+		JFileChooser chooser=new JFileChooser("./");
+		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+		chooser.setFileFilter(filter);
+		int value=chooser.showOpenDialog(new encode());
+		if(value==JFileChooser.APPROVE_OPTION)
+		{
+			File directory=chooser.getSelectedFile();
+			try
+			{
+				
+				steganographyview.depath=directory.getPath();
+				
+				decode.label.setIcon(new ImageIcon(ImageIO.read(new File(steganographyview.depath))));
+			}
+			catch(Exception f)
+			{
+				JOptionPane.showMessageDialog(new decode(), "The file cannot be opened", "Error!",JOptionPane.ERROR_MESSAGE);
+			}
+		}	
+	    try
+	    {
+			String texta=decodee(steganographyview.depath);
+			JOptionPane.showMessageDialog(new encode(), "Image decoded!!","Success",JOptionPane.INFORMATION_MESSAGE);
+			encode e=new encode();
+	
+			new steganographyview().setContentPane(e);
+	
+			e.textinput(texta);
+	    }
+	    catch(Exception e)
+	    {
+		
+	    }
 	}
 	private String decodee(String path)
 	{
